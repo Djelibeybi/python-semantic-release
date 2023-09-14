@@ -1,5 +1,5 @@
 # This Dockerfile is only for GitHub Actions
-FROM python:3.10-bullseye
+FROM python:3.11-bullseye
 
 RUN set -ex; \
     apt-get update; \
@@ -17,8 +17,11 @@ COPY . /semantic-release
 
 RUN cd /semantic-release && \
     python -m venv /semantic-release/.venv && \
-    /semantic-release/.venv/bin/pip install .
+    /semantic-release/.venv/bin/pip install . && \
+    /semantic-release/.venv/bin/pip install poetry
 
-RUN /semantic-release/.venv/bin/python -m semantic_release --help
+
+RUN /semantic-release/.venv/bin/python -m semantic_release --help && \
+    /semantic-release/.venv/bin/poetry --help
 
 ENTRYPOINT ["/semantic-release/action.sh"]
